@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RustyBolt Shop Manager — Shop Software Without the Monthly Bill</title>
+<meta name="description" content="RustyBolt Shop Manager is full shop-management software for automotive, heavy equipment and fleet shops. Buy it once for $250 and own it. No monthly fees.">
+<meta property="og:title" content="RustyBolt Shop Manager">
+<meta property="og:description" content="Full shop-management software for auto, heavy equipment and fleet shops. Buy it once. Own it. No monthly fees.">
+<meta property="og:url" content="https://rustyboltsoftware.com/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><polygon points='32,4 56,18 56,46 32,60 8,46 8,18' fill='%23c2410c'/><circle cx='32' cy='32' r='10' fill='%231c1917'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rust:#c2410c; --rust-hi:#ea580c; --rust-lo:#9a3412;
+    --steel:#1c1917; --steel-2:#292524; --steel-3:#44403c;
+    --paper:#fafaf9; --paper-2:#f5f5f4; --line:#e7e5e4;
+    --ink:#1c1917; --muted:#57534e; --on-dark:#f5f5f4; --on-dark-muted:#a8a29e;
+    --radius:10px; --max:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}
+  a{color:inherit}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+  .btn{display:inline-block;font-weight:600;text-decoration:none;padding:14px 26px;border-radius:8px;transition:transform .15s,background .15s;border:2px solid transparent}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-rust{background:var(--rust);color:#fff}
+  .btn-rust:hover{background:var(--rust-hi)}
+  .btn-ghost{border-color:var(--steel-3);color:var(--on-dark)}
+  .btn-ghost:hover{border-color:var(--on-dark-muted)}
+  .eyebrow{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:.85rem;color:var(--rust);font-weight:600}
+
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:20;background:rgba(28,25,23,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--steel-3)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;color:var(--on-dark);text-decoration:none;font-family:Oswald,sans-serif;font-size:1.25rem;text-transform:uppercase;letter-spacing:.04em}
+  .logo svg{width:30px;height:30px}
+  .logo span b{color:var(--rust-hi);font-weight:700}
+  .nav nav{display:flex;gap:26px;align-items:center}
+  .nav nav a{color:var(--on-dark-muted);text-decoration:none;font-size:.95rem;font-weight:500}
+  .nav nav a:hover{color:var(--on-dark)}
+  .nav nav .btn{padding:9px 18px;color:#fff}
+  @media(max-width:760px){.nav nav a:not(.btn){display:none}}
+
+  /* hero */
+  .hero{background:var(--steel);color:var(--on-dark);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(800px 400px at 85% 10%,rgba(194,65,12,.28),transparent 60%),
+    repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0 2px,transparent 2px 14px)}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding-top:80px;padding-bottom:90px}
+  .hero h1{font-size:clamp(2.4rem,5.5vw,4rem);margin:14px 0 20px}
+  .hero h1 em{font-style:normal;color:var(--rust-hi)}
+  .hero p.lead{font-size:1.15rem;color:#d6d3d1;max-width:34em}
+  .hero .ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+  .hero .fine{margin-top:18px;font-size:.9rem;color:var(--on-dark-muted)}
+  @media(max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-top:56px;padding-bottom:64px}}
+
+  /* app mock */
+  .mock{background:#0c0a09;border:1px solid var(--steel-3);border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,.45);overflow:hidden;font-size:.8rem}
+  .mock .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--steel-2);border-bottom:1px solid var(--steel-3);color:var(--on-dark-muted)}
+  .mock .bar i{width:10px;height:10px;border-radius:50%;background:var(--steel-3);display:inline-block}
+  .mock .bar span{margin-left:8px}
+  .mock .body{display:grid;grid-template-columns:120px 1fr;min-height:300px}
+  .mock .side{background:var(--steel-2);padding:12px 0;border-right:1px solid var(--steel-3)}
+  .mock .side div{padding:8px 14px;color:var(--on-dark-muted)}
+  .mock .side div.on{color:#fff;background:rgba(194,65,12,.25);border-left:3px solid var(--rust-hi)}
+  .mock .main{padding:14px}
+  .mock .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+  .mock .kpi{background:var(--steel-2);border:1px solid var(--steel-3);border-radius:6px;padding:8px 10px;color:var(--on-dark-muted)}
+  .mock .kpi b{display:block;color:#fff;font-size:1.05rem;font-family:Oswald,sans-serif}
+  .mock table{width:100%;border-collapse:collapse;color:#d6d3d1}
+  .mock th{text-align:left;color:var(--on-dark-muted);font-weight:500;padding:6px 4px;border-bottom:1px solid var(--steel-3)}
+  .mock td{padding:7px 4px;border-bottom:1px solid #26221f}
+  .tag{font-size:.7rem;padding:2px 7px;border-radius:99px;font-weight:600}
+  .t-prog{background:rgba(234,88,12,.2);color:#fdba74}
+  .t-wait{background:rgba(250,204,21,.15);color:#fde68a}
+  .t-done{background:rgba(34,197,94,.15);color:#86efac}
+  @media(max-width:520px){.mock .body{grid-template-columns:1fr}.mock .side{display:none}}
+
+  /* strip */
+  .strip{background:var(--rust);color:#fff}
+  .strip .wrap{display:flex;flex-wrap:wrap;justify-content:space-around;gap:16px;padding:18px 20px;font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:1rem}
+
+  section{padding:88px 0}
+  .sec-head{max-width:640px;margin-bottom:46px}
+  .sec-head h2{font-size:clamp(1.9rem,4vw,2.7rem);margin:10px 0 14px}
+  .sec-head p{color:var(--muted);font-size:1.08rem}
+
+  /* problem */
+  .problem{background:var(--paper-2);border-bottom:1px solid var(--line)}
+  .cost{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .cost .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+  .cost .card.win{border:2px solid var(--rust);position:relative}
+  .cost .card.win::after{content:"RustyBolt";position:absolute;top:-13px;left:24px;background:var(--rust);color:#fff;font-family:Oswald,sans-serif;text-transform:uppercase;font-size:.8rem;letter-spacing:.08em;padding:3px 10px;border-radius:4px}
+  .cost h3{font-size:1.2rem;margin-bottom:16px;color:var(--muted)}
+  .cost .big{font-family:Oswald,sans-serif;font-size:3rem;line-height:1}
+  .cost .card.win .big{color:var(--rust)}
+  .cost ul{list-style:none;margin-top:18px}
+  .cost li{padding:7px 0;border-top:1px dashed var(--line);display:flex;justify-content:space-between;gap:12px;color:var(--muted)}
+  .cost li b{color:var(--ink)}
+  .cost-note{margin-top:16px;font-size:.85rem;color:var(--muted)}
+  @media(max-width:760px){.cost{grid-template-columns:1fr}}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .feat{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:border-color .15s}
+  .feat:hover{border-color:var(--rust)}
+  .feat .ic{width:44px;height:44px;border-radius:8px;background:rgba(194,65,12,.1);display:grid;place-items:center;margin-bottom:16px}
+  .feat .ic svg{width:24px;height:24px;stroke:var(--rust);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .feat h3{font-size:1.15rem;margin-bottom:8px}
+  .feat p{color:var(--muted);font-size:.97rem}
+  @media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+  /* who */
+  .who{background:var(--steel);color:var(--on-dark)}
+  .who .sec-head p{color:var(--on-dark-muted)}
+  .who .grid .feat{background:var(--steel-2);border-color:var(--steel-3)}
+  .who .grid .feat p{color:var(--on-dark-muted)}
+  .who .feat .ic{background:rgba(234,88,12,.18)}
+  .who .feat .ic svg{stroke:var(--rust-hi)}
+
+  /* pricing */
+  .pricing .box{max-width:560px;margin:0 auto;background:#fff;border:2px solid var(--steel);border-radius:14px;overflow:hidden;box-shadow:0 20px 40px rgba(28,25,23,.08)}
+  .pricing .top{background:var(--steel);color:var(--on-dark);padding:30px 34px}
+  .pricing .top h3{font-size:1.3rem;color:var(--on-dark-muted)}
+  .pricing .price{font-family:Oswald,sans-serif;font-size:4.2rem;line-height:1;margin-top:8px}
+  .pricing .price small{font-size:1.1rem;color:var(--on-dark-muted);letter-spacing:.04em}
+  .pricing .inner{padding:30px 34px}
+  .pricing ul{list-style:none;margin-bottom:26px}
+  .pricing li{padding:9px 0 9px 30px;position:relative;border-bottom:1px solid var(--line)}
+  .pricing li::before{content:"";position:absolute;left:4px;top:15px;width:12px;height:7px;border-left:3px solid var(--rust);border-bottom:3px solid var(--rust);transform:rotate(-45deg)}
+  .pricing .renew{background:var(--paper-2);border-radius:8px;padding:14px 16px;font-size:.95rem;color:var(--muted);margin-bottom:24px}
+  .pricing .renew b{color:var(--ink)}
+  .pricing .btn{display:block;text-align:center;font-size:1.05rem}
+
+  /* faq */
+  .faq{background:var(--paper-2);border-top:1px solid var(--line)}
+  .faq details{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin-bottom:12px;padding:0 22px}
+  .faq summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:600;display:flex;justify-content:space-between;gap:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--rust);font-size:1.4rem;line-height:1}
+  .faq details[open] summary::after{content:"–"}
+  .faq details p{padding:0 0 18px;color:var(--muted)}
+  .faq .list{max-width:780px}
+
+  /* cta */
+  .cta{background:var(--rust);color:#fff;text-align:center}
+  .cta h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:14px}
+  .cta p{font-size:1.1rem;opacity:.92;margin-bottom:28px}
+  .cta .btn{background:var(--steel);color:#fff;margin:6px}
+  .cta .btn.alt{background:transparent;border-color:rgba(255,255,255,.6)}
+
+  footer{background:var(--steel);color:var(--on-dark-muted);padding:40px 0;font-size:.92rem}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+  footer a{color:var(--on-dark)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="RustyBolt Software home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="#c2410c"/><polygon points="32,12 49,22 49,42 32,52 15,42 15,22" fill="none" stroke="#fdba74" stroke-width="2" opacity=".5"/><circle cx="32" cy="32" r="10" fill="#1c1917"/></svg>
+      <span>Rusty<b>Bolt</b></span>
+    </a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#who">Who it's for</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-rust" href="#pricing">Buy now</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" style="padding:0">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">RustyBolt Shop Manager</div>
+        <h1>Run your shop.<br><em>Stop renting</em> your software.</h1>
+        <p class="lead">Full shop-management software for automotive, heavy equipment and fleet shops — work orders, estimates, invoices, parts and customers in one place. Buy it once. It's yours.</p>
+        <div class="ctas">
+          <a class="btn btn-rust" href="#pricing">Get it for $250</a>
+          <a class="btn btn-ghost" href="#features">See what it does</a>
+        </div>
+        <p class="fine">One-time purchase · Runs on your shop PC · Built in Michigan</p>
+      </div>
+
+      <div class="mock" aria-label="Illustration of the RustyBolt Shop Manager dashboard">
+        <div class="bar"><i></i><i></i><i></i><span>RustyBolt Shop Manager</span></div>
+        <div class="body">
+          <div class="side">
+            <div class="on">Dashboard</div><div>Work Orders</div><div>Estimates</div><div>Invoices</div><div>Customers</div><div>Units</div><div>Parts</div>
+          </div>
+          <div class="main">
+            <div class="kpis">
+              <div class="kpi">Open WOs<b>14</b></div>
+              <div class="kpi">Today<b>$4,820</b></div>
+              <div class="kpi">Low stock<b>6</b></div>
+            </div>
+            <table>
+              <thead><tr><th>WO #</th><th>Unit</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>2041</td><td>'19 F-250</td><td><span class="tag t-prog">In progress</span></td></tr>
+                <tr><td>2040</td><td>CAT 320 Excavator</td><td><span class="tag t-wait">Waiting parts</span></td></tr>
+                <tr><td>2039</td><td>Fleet #12 Silverado</td><td><span class="tag t-done">Ready</span></td></tr>
+                <tr><td>2038</td><td>Kenworth T880</td><td><span class="tag t-prog">In progress</span></td></tr>
+                <tr><td>2037</td><td>Bobcat S650</td><td><span class="tag t-done">Ready</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip"><div class="wrap"><span>No monthly fees</span><span>Auto · Heavy Equipment · Fleet</span><span>Your data stays in your shop</span></div></div>
+
+  <section class="problem">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">The problem</div>
+        <h2>Shop software shouldn't cost you a truck payment</h2>
+        <p>Most shop-management platforms charge every month, forever — and the price only goes up. RustyBolt gives you the tools a shop actually needs for a price you pay once.</p>
+      </div>
+      <div class="cost">
+        <div class="card">
+          <h3>Typical subscription*</h3>
+          <div class="big">$7,200</div>
+          <ul>
+            <li>Year 1 <b>$2,400</b></li>
+            <li>Year 2 <b>$2,400</b></li>
+            <li>Year 3 <b>$2,400</b></li>
+            <li>Stop paying <b>Lose access</b></li>
+          </ul>
+        </div>
+        <div class="card win">
+          <h3>RustyBolt Shop Manager</h3>
+          <div class="big">$550</div>
+          <ul>
+            <li>Year 1 (purchase + updates) <b>$250</b></li>
+            <li>Year 2 updates &amp; support <b>$150</b></li>
+            <li>Year 3 updates &amp; support <b>$150</b></li>
+            <li>Stop renewing <b>Keep using it</b></li>
+          </ul>
+        </div>
+      </div>
+      <p class="cost-note">*Example based on a $200/month subscription over three years. Your current software may cost more or less.</p>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Features</div>
+        <h2>Everything on the shop floor, in one place</h2>
+        <p>Built by someone who knows shops — no bloat, no upsell screens, just the work.</p>
+      </div>
+      <div class="grid">
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12h6M9 16h4"/></svg></div><h3>Work orders</h3><p>Open, assign and track jobs from write-up to ready, with labor, parts and notes on every ticket.</p></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div><h3>Estimates &amp; invoices</h3><p>Turn an estimate into a work order and a work order into an invoice without retyping a thing.</p></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg></div><h3>Parts inventory</h3><p>Know what's on the shelf, what it cost and when to reorder. Import your existing parts list to get started fast.</p></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 11h5M19.5 8.5v5"/></svg></div><h3>Customers</h3><p>Contact info, history and every job you've ever done for them, a click away.</p></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 16V9l2-4h9l3 4h3v7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6"/></svg></div><h3>Vehicles &amp; equipment</h3><p>Pickups, semis, excavators, skid steers — track units by VIN or serial with full service history.</p></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg></div><h3>Runs on your PC</h3><p>Simple Windows installer. Your shop's data lives on your machine, not on someone else's server.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="who" id="who">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Who it's for</div>
+        <h2>Built for shops that turn wrenches</h2>
+        <p>From a two-bay garage to an equipment yard, RustyBolt fits the way independent shops actually work.</p>
+      </div>
+      <div class="grid">
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></div><h3>Automotive repair</h3><p>Independent and family-owned shops tired of paying more every year for features they don't use.</p></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 18h12v-5H6l-2 3"/><path d="M14 18V8h4l4 6v4h-8"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg></div><h3>Heavy equipment</h3><p>Diesel, ag and construction equipment shops that need serial numbers, hours and big-ticket parts handled right.</p></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="8" height="8" rx="1"/><rect x="14" y="7" width="8" height="8" rx="1"/><path d="M6 15v3M18 15v3M10 11h4"/></svg></div><h3>Fleet maintenance</h3><p>In-house fleet departments keeping trucks and equipment on the road and every repair on record.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="sec-head" style="margin-left:auto;margin-right:auto;text-align:center">
+        <div class="eyebrow">Pricing</div>
+        <h2>One price. No surprises.</h2>
+        <p>Buy it once and keep it forever. Renew updates and support only if you want them.</p>
+      </div>
+      <div class="box">
+        <div class="top">
+          <h3>RustyBolt Shop Manager</h3>
+          <div class="price">$250 <small>ONE TIME</small></div>
+        </div>
+        <div class="inner">
+          <ul>
+            <li>Full software license — yours to keep forever</li>
+            <li>Work orders, estimates, invoices, parts, customers &amp; units</li>
+            <li>1 year of updates and support included</li>
+            <li>Windows installer for your shop PC</li>
+            <li>No monthly fees, ever</li>
+          </ul>
+          <div class="renew"><b>After year one:</b> renew updates &amp; support for <b>$150/year</b> — totally optional. Don't renew and the software keeps working; you just won't get new updates or support.</div>
+          <!-- Replace # with your Stripe Payment Link (Stripe Dashboard → Payment Links) -->
+          <a class="btn btn-rust" href="#">Buy RustyBolt Shop Manager — $250</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">FAQ</div>
+        <h2>Straight answers</h2>
+      </div>
+      <div class="list">
+        <details><summary>Is it really a one-time purchase?</summary><p>Yes. You pay $250 once and the software is yours. That includes your first year of updates and support.</p></details>
+        <details><summary>What happens if I don't renew?</summary><p>Nothing breaks. RustyBolt keeps running exactly as it is — you just stop receiving new updates and support. You can renew any time for $150/year.</p></details>
+        <details><summary>What do I need to run it?</summary><p>A Windows PC at your shop. Download the installer, run it, and you're up and running.</p></details>
+        <details><summary>Can I bring my data over from my current software?</summary><p>In many cases, yes — parts and customer lists exported to a spreadsheet can usually be brought in. Email us with what you're using now and we'll help you sort it out.</p></details>
+        <details><summary>Where is my data stored?</summary><p>On your own computer. Your shop's records stay in your shop.</p></details>
+        <details><summary>How do I get support?</summary><p>Email <a href="mailto:admin@rustyboltsoftware.com">admin@rustyboltsoftware.com</a> and you'll hear back from a real person.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Quit renting. Start owning.</h2>
+      <p>RustyBolt Shop Manager — $250, one time.</p>
+      <a class="btn" href="#pricing">Buy now</a>
+      <a class="btn alt" href="mailto:admin@rustyboltsoftware.com?subject=RustyBolt%20Shop%20Manager%20question">Ask a question</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="yr">2026</span> RustyBolt Software LLC · Made in Michigan</div>
+    <div><a href="mailto:admin@rustyboltsoftware.com">admin@rustyboltsoftware.com</a></div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
